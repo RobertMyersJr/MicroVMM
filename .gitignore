@@ -3,6 +3,7 @@ cmake_install.cmake
 CMakeFiles
 CMakeCache
 CMakeCache.txt
+compile_commands.json
 
 #Executable
 micro_vmm
