@@ -7,7 +7,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(SOURCES
     src/main.cpp
-    src/kvm_controller.cpp)
+    src/kvm_controller.cpp
+    src/LinuxSyscall.cpp
+)
 
 # Enable strong warnings to catch low-level mistakes early
 add_compile_options(-Wall -Wextra -Wpedantic)
