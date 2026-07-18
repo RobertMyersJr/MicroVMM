@@ -5,14 +5,15 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-KvmController::KvmController() : kvm_fd_(::open("/dev/kvm", O_RDWR)) {
+KvmController::KvmController(SyscallInterface &sys) : sys_(sys), kvm_fd_(sys_.do_open("/dev/kvm", O_RDWR)) {
     if(!kvm_fd_.is_valid()) {
         throw std::runtime_error("Failed to open /dev/kvm");
     }
+    api_check();
 }
 
 void KvmController::api_check() {
-  auto api_version = ::ioctl(kvm_fd_.get(), KVM_GET_API_VERSION, 0);
+  auto api_version = sys_.do_ioctl(kvm_fd_.get(), KVM_GET_API_VERSION, 0);
 
   if (api_version < 0) {
     throw std::runtime_error("Failed to query KVM API version.");

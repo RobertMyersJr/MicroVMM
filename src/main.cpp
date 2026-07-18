@@ -3,18 +3,24 @@
 #include <iostream>
 #include <fcntl.h>
 #include "kvm_controller.hpp"
+#include "vmm/LinuxSyscall.hpp"
 
 int main() {
     std::cout << "[MICRO VMM] Initializing workspace..." << std::endl;
 
-    KvmController kvm_controller;
-
     try {
-        kvm_controller.api_check();
-    } catch (std::runtime_error &err) {
-        std::printf("KVM failed the API check. Err: %s", err.what());
-        std::exit(1);
-    }
+        LinuxSyscall sys_call;
 
-    return 0;
+        std::cout << "Initializing hypervisor core...\n";
+
+        KvmController kvm_controller(sys_call);
+
+        std::cout << "KVM Handshake successful. API version 12 verified.\n";
+
+        return EXIT_SUCCESS;
+
+    } catch (std::runtime_error &err) {
+        std::cerr << "KVM failed the API check. Err: " << err.what() << "\n";
+        return EXIT_FAILURE;
+    }
 }
