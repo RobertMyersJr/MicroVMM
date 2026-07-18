@@ -4,9 +4,12 @@
 #include <stdexcept>
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include <utility>
 
-KvmController::KvmController() : kvm_fd_(::open("/dev/kvm", O_RDONLY)) {}
+KvmController::KvmController() : kvm_fd_(::open("/dev/kvm", O_RDWR)) {
+    if(!kvm_fd_.is_valid()) {
+        throw std::runtime_error("Failed to open /dev/kvm");
+    }
+}
 
 void KvmController::api_check() {
   auto api_version = ::ioctl(kvm_fd_.get(), KVM_GET_API_VERSION, 0);
