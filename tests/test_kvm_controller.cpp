@@ -12,16 +12,12 @@ public:
   int open_fd = 42;
   int ioctl_result = 12;
 
-  UniqueFd do_open(std::string_view, int) override {
-    return UniqueFd(open_fd);
-  }
+  UniqueFd do_open(std::string_view, int) override { return UniqueFd(open_fd); }
 
-  int do_ioctl(int, int, void *) override {
-    return ioctl_result;
-  }
+  int do_ioctl(int, int, void *) override { return ioctl_result; }
 };
 
-}
+} // namespace
 
 TEST(KvmHandshakeTest, SucceedsOnVersion12) {
   MockSyscall sys;
@@ -53,7 +49,6 @@ TEST(KvmHandshakeTest, HandlesOpenFailure) {
 
 TEST(KvmHandshakeTest, HandlesVmInitFailure) {
   MockSyscall sys;
-  sys.open_fd = 1;
 
   KvmController vmm(sys);
 
@@ -64,9 +59,8 @@ TEST(KvmHandshakeTest, HandlesVmInitFailure) {
 
 TEST(KvmHandshakeTest, SucceedsOpeningVM) {
   MockSyscall sys;
-  s
+
   KvmController vmm(sys);
-  sys.ioctl_result = -1;
 
   EXPECT_NO_THROW({ vmm.kvm_create_vm(); });
 }
