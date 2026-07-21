@@ -13,11 +13,14 @@ public:
    * @param sys the system call interface we will use. Use LinuxSyscall for POSIX.
    */
   KvmController(SyscallInterface &sys);
+
   /**
    * @brief Checks if the KVM API is version 12.
    * @throws std::runtime if the API is not at version 12.
    */
   void api_check();
+
+  UniqueFd kvm_create_vm();
 
 private:
   SyscallInterface &sys_;

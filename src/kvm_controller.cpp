@@ -1,4 +1,5 @@
 #include "../include/kvm_controller.hpp"
+#include "unique_fd.hpp"
 #include <fcntl.h>
 #include <linux/kvm.h>
 #include <stdexcept>
@@ -23,4 +24,13 @@ void KvmController::api_check() {
     throw std::runtime_error("Unsupported KVM API version! Expected 12, got " +
                              std::to_string(api_version));
   }
+}
+
+UniqueFd KvmController::kvm_create_vm() {
+  auto vm_fd = UniqueFd(sys_.do_ioctl(kvm_fd_.get(), KVM_CREATE_VM, 0));
+
+  if (!vm_fd.is_valid()) {
+    throw std::runtime_error("Failed to create VM.");
+  }
+  return vm_fd;
 }

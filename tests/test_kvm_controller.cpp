@@ -50,3 +50,23 @@ TEST(KvmHandshakeTest, HandlesOpenFailure) {
 
   EXPECT_THROW({ KvmController vmm(sys); }, std::runtime_error);
 }
+
+TEST(KvmHandshakeTest, HandlesVmInitFailure) {
+  MockSyscall sys;
+  sys.open_fd = 1;
+
+  KvmController vmm(sys);
+
+  // KVM_CREATE_VM returns an invalid file descriptor
+  sys.ioctl_result = -1;
+  EXPECT_THROW({ vmm.kvm_create_vm(); }, std::runtime_error);
+}
+
+TEST(KvmHandshakeTest, SucceedsOpeningVM) {
+  MockSyscall sys;
+  s
+  KvmController vmm(sys);
+  sys.ioctl_result = -1;
+
+  EXPECT_NO_THROW({ vmm.kvm_create_vm(); });
+}
