@@ -57,10 +57,9 @@ TEST(KvmHandshakeTest, HandlesVmInitFailure) {
   EXPECT_THROW({ vmm.kvm_create_vm(); }, std::runtime_error);
 }
 
-TEST(KvmHandshakeTest, SucceedsOpeningVM) {
+TEST(KvmHandshakeTest, VmFdIsValidAfterCreate) {
   MockSyscall sys;
-
   KvmController vmm(sys);
-
-  EXPECT_NO_THROW({ vmm.kvm_create_vm(); });
+  VmController vm = vmm.kvm_create_vm();
+  EXPECT_EQ(vm.get(), sys.ioctl_result);
 }

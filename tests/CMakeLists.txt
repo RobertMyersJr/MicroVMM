@@ -12,6 +12,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(run_vmm_tests
     test_kvm_controller.cpp
+    test_vm_controller.cpp
     ${CORE_SOURCES}
 )
 

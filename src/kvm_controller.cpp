@@ -1,16 +1,18 @@
 #include "../include/kvm_controller.hpp"
 #include "unique_fd.hpp"
+#include "vmm/VmController.hpp"
 #include <fcntl.h>
 #include <linux/kvm.h>
 #include <stdexcept>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-KvmController::KvmController(SyscallInterface &sys) : sys_(sys), kvm_fd_(sys_.do_open("/dev/kvm", O_RDWR)) {
-    if(!kvm_fd_.is_valid()) {
-        throw std::runtime_error("Failed to open /dev/kvm");
-    }
-    api_check();
+KvmController::KvmController(SyscallInterface &sys)
+    : sys_(sys), kvm_fd_(sys_.do_open("/dev/kvm", O_RDWR)) {
+  if (!kvm_fd_.is_valid()) {
+    throw std::runtime_error("Failed to open /dev/kvm");
+  }
+  api_check();
 }
 
 void KvmController::api_check() {
@@ -26,11 +28,7 @@ void KvmController::api_check() {
   }
 }
 
-UniqueFd KvmController::kvm_create_vm() {
+VmController KvmController::kvm_create_vm() {
   auto vm_fd = UniqueFd(sys_.do_ioctl(kvm_fd_.get(), KVM_CREATE_VM, 0));
-
-  if (!vm_fd.is_valid()) {
-    throw std::runtime_error("Failed to create VM.");
-  }
-  return vm_fd;
+  return VmController(std::move(vm_fd));
 }

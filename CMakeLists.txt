@@ -9,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/kvm_controller.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LinuxSyscall.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/VmController.cpp
 )
 
 set(SOURCES

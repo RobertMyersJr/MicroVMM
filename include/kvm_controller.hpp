@@ -1,16 +1,18 @@
 #pragma once
 #include "unique_fd.hpp"
 #include "vmm/SyscallInterface.hpp"
+#include "vmm/VmController.hpp"
 /**
  * @class KvmController
- * @brief The KvmContoller serves as a abstraction layer for the API of Kernel-based Virtual 
- * Machine subsystem.
+ * @brief The KvmContoller serves as a abstraction layer for the API of
+ * Kernel-based Virtual Machine subsystem.
  */
 class KvmController {
 public:
   /**
    * @brief Opens up the /dev/kmv file de
-   * @param sys the system call interface we will use. Use LinuxSyscall for POSIX.
+   * @param sys the system call interface we will use. Use LinuxSyscall for
+   * POSIX.
    */
   KvmController(SyscallInterface &sys);
 
@@ -20,7 +22,7 @@ public:
    */
   void api_check();
 
-  UniqueFd kvm_create_vm();
+  VmController kvm_create_vm();
 
 private:
   SyscallInterface &sys_;
