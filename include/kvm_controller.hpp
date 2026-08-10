@@ -24,6 +24,7 @@ public:
 
   VmController kvm_create_vm();
 
+  void create_mem();
 private:
   SyscallInterface &sys_;
   UniqueFd kvm_fd_;

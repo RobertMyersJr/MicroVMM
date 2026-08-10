@@ -6,6 +6,8 @@ class SyscallInterface {
     public:
         virtual UniqueFd do_open(std::string_view path, int flag) = 0;
         virtual int do_ioctl(int fd, int flag, void* arg) = 0;
+        [[nodiscard]] virtual void* do_memalign(size_t alignment, size_t size) = 0;
+        virtual void do_free(void* ptr) = 0;
 
         int do_ioctl(const UniqueFd& fd, int flag, void* arg) {
             return do_ioctl(fd.get(), flag, arg);
