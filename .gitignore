@@ -5,5 +5,12 @@ CMakeCache
 CMakeCache.txt
 compile_commands.json
 
-#Executable
+# Executable
 micro_vmm
+
+
+# GTest
+_deps
+
+# Other
+lib
