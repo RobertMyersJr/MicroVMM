@@ -1,6 +1,6 @@
 #pragma once
 #include "../unique_fd.hpp"
-#include "vmm/GuestMemory.hpp"
+#include "vmm/KvmGuestMemory.hpp"
 #include "vmm/SyscallInterface.hpp"
 
 class VmController {

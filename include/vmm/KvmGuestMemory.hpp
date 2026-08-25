@@ -16,7 +16,7 @@ class KvmGuestMemory {
 public:
   explicit KvmGuestMemory(std::size_t bytes_to_allocate, int vm,
                           SyscallInterface &sys)
-      : size_of_memory_(bytes_to_allocate), sys_(sys) {
+      : size_of_memory_(bytes_to_allocate), vm_(vm), sys_(sys) {
     // KVM expects the guest memory to be page aligned, so we need to allocate
     // memory.
     const std::size_t page_size = ::sysconf(_SC_PAGESIZE);
@@ -30,10 +30,14 @@ public:
         .memory_size = size_of_memory_,
         .userspace_addr = reinterpret_cast<__u64>(address_of_guest_mem_)};
 
-    auto success = sys_.do_ioctl(vm, KVM_SET_USER_MEMORY_REGION,
-                                 &kvm_userspace_memory_region_setup);
-    if (!success) {
-      throw std::runtime_error("Failed to create Memory space");
+    auto error = sys_.do_ioctl(vm, KVM_SET_USER_MEMORY_REGION,
+                               &kvm_userspace_memory_region_setup);
+    auto errno_do_ioctl = errno;
+    if (error) {
+      std::string error_msg =
+          "Failed to set user memory region for KVM. Error code: " +
+          std::to_string(error) + ", errno: " + std::to_string(errno_do_ioctl);
+      throw std::runtime_error(error_msg);
     }
   }
 

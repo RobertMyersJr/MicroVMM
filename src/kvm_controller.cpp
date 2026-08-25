@@ -30,5 +30,5 @@ void KvmController::api_check() {
 
 VmController KvmController::kvm_create_vm() {
   auto vm_fd = UniqueFd(sys_.do_ioctl(kvm_fd_.get(), KVM_CREATE_VM, 0));
-  return VmController(std::move(vm_fd));
+  return VmController(std::move(vm_fd), sys_);
 }
