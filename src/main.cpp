@@ -26,6 +26,10 @@ int main() {
 
     std::cout << "Guest memory of size 64 MB has been allocated.\n";
 
+    auto vcpu = vm_controller.createGuestVCpu();
+
+    std::cout << "Virtual CPU has been created.\n";
+
     return EXIT_SUCCESS;
 
   } catch (std::runtime_error &err) {

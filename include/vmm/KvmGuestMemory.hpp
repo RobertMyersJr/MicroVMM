@@ -14,8 +14,8 @@
  */
 class KvmGuestMemory {
 public:
-  explicit KvmGuestMemory(std::size_t bytes_to_allocate, int vm,
-                          SyscallInterface &sys)
+  explicit KvmGuestMemory(int vm, SyscallInterface &sys,
+                          std::size_t bytes_to_allocate)
       : size_of_memory_(bytes_to_allocate), vm_(vm), sys_(sys) {
     // KVM expects the guest memory to be page aligned, so we need to allocate
     // memory.
